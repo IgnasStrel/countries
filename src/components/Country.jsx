@@ -1,38 +1,47 @@
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
-const Country = ({ allCountries }) => {
-  console.log(allCountries);
+const Country = ({ filteredCountrys }) => {
+  // pasitikrinimo tikslais
+  console.log(filteredCountrys);
+
   return (
-    <div>
-      {allCountries !== undefined && allCountries.length !== 0 ? (
-        allCountries.map((country, index) => (
-          <Card style={{ width: "18rem" }} key={index}>
-            <Card.Img variant="top" src={country.flags.png} />
-            <Card.Body>
+    <div className="d-inline-flex flex-wrap justify-content-center bg-dark w-100">
+      {/* apsauga nuo duomenu negavimo is DB (jaigu nera stalciuko, arba jis tuscias) */}
+      {filteredCountrys !== undefined && filteredCountrys.length !== 0 ? (
+        // sukamas mapiukas ispausdinti salies informacijai
+        filteredCountrys.map((country, index) => (
+          <Card
+            className="m-3 border-secondary text-bg-secondary"
+            style={{ width: "18rem" }}
+            key={index}
+          >
+            <Card.Img
+              className="border-bottom border-secondary"
+              variant="top"
+              src={country.flags.png}
+              alt={country.flags.alt}
+              style={{ height: "10rem" }}
+            />
+            <Card.Body className="d-inline-flex flex-column justify-content-around">
               <Card.Title>{country.name.common}</Card.Title>
+              <Card.Text>Capital: {country.capital}</Card.Text>
               <Card.Text>
-                <p>
-                  <b>Population: </b>
-                  {country.population}
-                </p>
+                Region: {country.region} ({country.subregion})
               </Card.Text>
-              <Card.Text>
-                <b>Region: </b>
-                {country.region}
-              </Card.Text>
-              <Card.Text>
-                <b>Capital: </b>
-                {country.capital}
-              </Card.Text>
-              <Button variant="primary">More</Button>
+              <Button variant="primary">
+                Read more about - {country.name.common}
+              </Button>
             </Card.Body>
           </Card>
         ))
       ) : (
+        // jai nesuveike ifukas rodomas sis tekstas narsykleje
         <h1>Duomenys nerasti</h1>
       )}
     </div>
   );
 };
+
 export default Country;
