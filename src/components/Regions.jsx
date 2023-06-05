@@ -1,43 +1,34 @@
-import React from "react";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Form from "react-bootstrap/Form";
 
-const Regions = ({
-  uniqueRegions,
-  filterData,
-  getSearchResult
-}) => {
+const Regions = ({ regions, filterData, searchCountries }) => {
+  console.log(regions);
+
   return (
     <div>
-      <Navbar bg="white" variant="bg-dark" expand="lg">
-        <Container fluid>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            {uniqueRegions.map((newRegion, index) => (
-              <Nav
-                key={index}
-                className="me-auto my-2 my-lg-0 m-4"
-                style={{ maxHeight: "100px"}}
-                navbarScroll
-              >
-                <Nav.Link href="#action1" onClick={() => filterData(newRegion)}>
-                  {newRegion}
-                </Nav.Link>
-              </Nav>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home" className="mx-5">
+            Countries
+          </Navbar.Brand>
+          <Nav className="me-auto">
+            {regions.map((region, index) => (
+              <Nav.Link href="#" key={index} onClick={() => filterData(region)}>
+                {region}
+              </Nav.Link>
             ))}
-            <Form className="d-flex">
-              <Form.Control
-
-                type="search"
-                placeholder="Country name"
-                className="me-2"
-                aria-label="Search"
-                onChange={(e) => getSearchResult(e.target.value)}
-              />
-            </Form>
-          </Navbar.Collapse>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              onChange={(e) => searchCountries(e.target.value)}
+            />
+          </Form>
         </Container>
       </Navbar>
     </div>

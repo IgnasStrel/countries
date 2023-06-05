@@ -1,81 +1,105 @@
-import { useState, useEffect, useRef } from "react";
-import {getAllCountriesInfo, searchCountry} from "../services/countriesService";
+import { useState, useEffect } from "react";
+import {
+  getAllCountriesInfo,
+  searchCountry,
+  getOneCountry,
+} from "../services/countriesService";
 import Country from "./Country";
 import Regions from "./Regions";
+import OneCountryModal from "./OneCountryModal.jsx";
+
+import Modal from "react-modal";
 
 const Main = () => {
-  // state visada top level virsuj
+  //state visada top level - virsuje
   const [countries, setCountries] = useState([]);
-  const [filteredCountrys, setFilteredCountrys] = useState([]);
-
-  // statai salies paieskai pagal pavadinima
-  const [name, setName] = useState([]);
-  const inputRef = useRef();
-
-  // funkcija duomenu gavimui is service (https://restcountries.com/v3.1/name/{name})
-  const getSearchResult = (word)=>{
-    searchCountry(word).then(response=> {
-      if (response !== undefined) {
-        console.log(response, word)
-       setFilteredCountrys(response) }
-      
-    })
-    
-  };
+  const [filteredCountries, setFilteredCountries] = useState([]);
+  const [oneCountry, setOneCountry] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const getData = () => {
-    // gauti duomenis is service aprasyto axios get metodo
+    //gauti duomenis is services aprasyto axios get metodo
     getAllCountriesInfo().then((response) => {
       setCountries(response);
-      setFilteredCountrys(response);
-      getSearchResult(response);
+      setFilteredCountries(response);
     });
   };
 
-  // isfiltruojami unikalus regionai
+  const getSearchResult = (searchWord) => {
+    searchCountry(searchWord).then((response) => {
+      if (response !== undefined) {
+        console.log(response, searchWord);
+        setFilteredCountries(response);
+      }
+    });
+  };
+
   const uniqueRegions = [
-    ...new Set(countries.map((oneRegion) => oneRegion.region)),
     "All",
+    ...new Set(countries.map((country) => country.region)),
   ];
   console.log(uniqueRegions);
 
-  // funkcija isfiltruoja duomenis pagal regiona
   const filterData = (region) => {
     console.log(region);
-    // ifas pargrazinti visus duomenis be filtracijos
     if (region !== "All") {
-      // filtruojamos salys
-      const filtered = countries.filter((items) =>
-        items.region.includes(region)
+      const filtered = countries.filter((country) =>
+        country.region.includes(region)
       );
-      setFilteredCountrys(filtered);
+      console.log(countries, filtered);
+      setFilteredCountries(filtered);
     } else {
-      // priskiriamos visos salys
-      setFilteredCountrys(countries);
+      setFilteredCountries(countries);
     }
-    console.log(filteredCountrys);
   };
 
-  // paieska pagal salies pavadinimas
+  console.log(filteredCountries);
+  //kada pakviesti, daryti req - uzklausa - pasako mums useEffect
 
+  const getOneCountryInfo = (country) => {
+    getOneCountry(country).then((response) => {
+      console.log(country, response);
+      setOneCountry(response);
+      setModalIsOpenToTrue();
+    });
+  };
 
-  // console.log(countries);
-  // kada pakviesime daryti req - uzklausa pasako mums useEffect
+  const setModalIsOpenToTrue = () => {
+    setModalIsOpen(true);
+    Modal.setAppElement("body");
+  };
+
+  const setModalIsOpenToFalse = () => {
+    setModalIsOpen(false);
+  };
+
   useEffect(() => {
     getData();
+    console.log("useEffect");
   }, []);
 
   return (
-    <div className="">
+    <div className="container">
       <Regions
-      getSearchResult={getSearchResult}
-        uniqueRegions={uniqueRegions}
+        regions={uniqueRegions}
         filterData={filterData}
-        inputRef={inputRef}
-        setName={setName}
-        name={name}
+        searchCountries={getSearchResult}
       />
-      <Country countries={countries} filteredCountrys={filteredCountrys} />
+
+      <Country
+        allCountries={filteredCountries}
+        getOneCountryInfo={getOneCountryInfo}
+        setModalIsOpenToTrue={setModalIsOpenToTrue}
+      />
+      <Modal
+        isOpen={modalIsOpen}
+        className="d-flex justify-content-center pt-5"
+      >
+        <OneCountryModal
+          oneCountry={oneCountry}
+          setModalIsOpenToFalse={setModalIsOpenToFalse}
+        />
+      </Modal>
     </div>
   );
 };
