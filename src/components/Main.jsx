@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import getAllCountriesInfo from "../services/countriesService";
-import countrySearch from "../services/countrySearch";
+import {getAllCountriesInfo, searchCountry} from "../services/countriesService";
 import Country from "./Country";
 import Regions from "./Regions";
 
@@ -14,14 +13,14 @@ const Main = () => {
   const inputRef = useRef();
 
   // funkcija duomenu gavimui is service (https://restcountries.com/v3.1/name/{name})
-  const getCountryName = (uniqueCountry) => {
-    countrySearch(uniqueCountry).then((response) => {
+  const getSearchResult = (word)=>{
+    searchCountry(word).then(response=> {
       if (response !== undefined) {
-        setFilteredCountrys(response);
-      } else {
-        setFilteredCountrys(countries);
-      }
-    });
+        console.log(response, word)
+       setFilteredCountrys(response) }
+      
+    })
+    
   };
 
   const getData = () => {
@@ -29,6 +28,7 @@ const Main = () => {
     getAllCountriesInfo().then((response) => {
       setCountries(response);
       setFilteredCountrys(response);
+      getSearchResult(response);
     });
   };
 
@@ -57,12 +57,7 @@ const Main = () => {
   };
 
   // paieska pagal salies pavadinimas
-  function focus(e) {
-    e.preventDefault();
-    inputRef.current.focus();
-    console.log(name);
-    getCountryName(name);
-  }
+
 
   // console.log(countries);
   // kada pakviesime daryti req - uzklausa pasako mums useEffect
@@ -73,9 +68,9 @@ const Main = () => {
   return (
     <div className="">
       <Regions
+      getSearchResult={getSearchResult}
         uniqueRegions={uniqueRegions}
         filterData={filterData}
-        focus={focus}
         inputRef={inputRef}
         setName={setName}
         name={name}

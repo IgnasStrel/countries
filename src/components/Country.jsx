@@ -7,13 +7,13 @@ const Country = ({ filteredCountrys }) => {
   console.log(filteredCountrys);
 
   return (
-    <div className="d-inline-flex flex-wrap justify-content-center bg-dark w-100">
+    <div className="d-inline-flex flex-wrap justify-content-center w-100">
       {/* apsauga nuo duomenu negavimo is DB (jaigu nera stalciuko, arba jis tuscias) */}
       {filteredCountrys !== undefined && filteredCountrys.length !== 0 ? (
         // sukamas mapiukas ispausdinti salies informacijai
         filteredCountrys.map((country, index) => (
           <Card
-            className="m-3 border-secondary text-bg-secondary"
+            className="m-3 border-secondary "
             style={{ width: "18rem" }}
             key={index}
           >
@@ -30,7 +30,7 @@ const Country = ({ filteredCountrys }) => {
               <Card.Text>
                 Region: {country.region} ({country.subregion})
               </Card.Text>
-              <Button variant="primary">
+              <Button variant="dark">
                 Read more about - {country.name.common}
               </Button>
             </Card.Body>
