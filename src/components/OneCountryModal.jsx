@@ -19,7 +19,7 @@ const OneCountryModal = ({ oneCountry, setModalIsOpenToFalse }) => {
           <strong>Capital city: </strong>{" "}
           {oneCountry[0].capital && typeof oneCountry[0].capital == "object"
             ? oneCountry[0].capital[0]
-            : oneCountry[0].capital || "Nerasta..."}
+            : oneCountry[0].capital || "No capital city"}
         </p>
         <p>
           <strong>Population: </strong> {oneCountry[0].population}
@@ -29,6 +29,10 @@ const OneCountryModal = ({ oneCountry, setModalIsOpenToFalse }) => {
         </p>
         <p>
           <strong>TimeZone: </strong> {oneCountry[0].timezones[0]}
+        </p>
+        <p>
+          <strong>Currencies : </strong> { Object.keys(oneCountry[0].currencies).map((first, index) => key={index}>{first}  )}
+          { Object.keys(oneCountry[0].currencies[first]).map((second, index) => { key={index}>{second};{oneCountry[0].currencies[first][second]}  })}
         </p>
       </div>
       <button

@@ -10,9 +10,6 @@ const Regions = ({ regions, filterData, searchCountries }) => {
     <div>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home" className="mx-5">
-            Countries
-          </Navbar.Brand>
           <Nav className="me-auto">
             {regions.map((region, index) => (
               <Nav.Link href="#" key={index} onClick={() => filterData(region)}>
