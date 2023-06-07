@@ -34,20 +34,22 @@ const OneCountryModal = ({ oneCountry, setModalIsOpenToFalse }) => {
           <strong>Borders: </strong>
           {oneCountry[0].borders && typeof oneCountry[0].borders == "object"
             ? Object.keys(oneCountry[0].borders).map((first, index) => {
-                return <p key={index}>{oneCountry[0].borders[first]}</p>;
+                return <span key={index}> {oneCountry[0].borders[first]}</span>;
               })
             : oneCountry[0].borders || "No borders"}
         </p>
         <p>
-          <strong>Languages: </strong>{" "}
+          <strong>Languages: </strong>
           {oneCountry[0].languages && typeof oneCountry[0].languages == "object"
             ? Object.keys(oneCountry[0].languages).map((first, index) => {
-                return <p key={index}>{oneCountry[0].languages[first]}</p>;
+                return (
+                  <span key={index}>{oneCountry[0].languages[first]} </span>
+                );
               })
             : oneCountry[0].languages || "No languages"}
         </p>
         <p>
-          <strong>Currencies : </strong>{" "}
+          <strong>Currencies : </strong>
           {oneCountry[0].currencies &&
           typeof oneCountry[0].currencies == "object" ? (
             <ul>
