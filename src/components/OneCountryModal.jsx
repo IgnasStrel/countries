@@ -31,8 +31,49 @@ const OneCountryModal = ({ oneCountry, setModalIsOpenToFalse }) => {
           <strong>TimeZone: </strong> {oneCountry[0].timezones[0]}
         </p>
         <p>
-          <strong>Currencies : </strong> { Object.keys(oneCountry[0].currencies).map((first, index) => key={index}>{first}  )}
-          { Object.keys(oneCountry[0].currencies[first]).map((second, index) => { key={index}>{second};{oneCountry[0].currencies[first][second]}  })}
+          <strong>Borders: </strong>
+          {oneCountry[0].borders && typeof oneCountry[0].borders == "object"
+            ? Object.keys(oneCountry[0].borders).map((first, index) => {
+                return <p key={index}>{oneCountry[0].borders[first]}</p>;
+              })
+            : oneCountry[0].borders || "No borders"}
+        </p>
+        <p>
+          <strong>Languages: </strong>{" "}
+          {oneCountry[0].languages && typeof oneCountry[0].languages == "object"
+            ? Object.keys(oneCountry[0].languages).map((first, index) => {
+                return <p key={index}>{oneCountry[0].languages[first]}</p>;
+              })
+            : oneCountry[0].languages || "No languages"}
+        </p>
+        <p>
+          <strong>Currencies : </strong>{" "}
+          {oneCountry[0].currencies &&
+          typeof oneCountry[0].currencies == "object" ? (
+            <ul>
+              {Object.keys(oneCountry[0].currencies).map((first, index) => {
+                return (
+                  <li key={index}>
+                    {first}
+                    <ul>
+                      {Object.keys(oneCountry[0].currencies[first]).map(
+                        (second, index) => {
+                          return (
+                            <li key={index}>
+                              {second}:{" "}
+                              {oneCountry[0].currencies[first][second]}
+                            </li>
+                          );
+                        }
+                      )}
+                    </ul>
+                  </li>
+                );
+              })}{" "}
+            </ul>
+          ) : (
+            oneCountry[0].currencies || "No currencies"
+          )}
         </p>
       </div>
       <button
